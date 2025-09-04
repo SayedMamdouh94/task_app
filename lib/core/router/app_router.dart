@@ -1,17 +1,22 @@
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:task_app/core/router/routes.dart';
 import 'package:task_app/core/style/app_colors.dart';
 import 'package:task_app/features/splash/presentation/ui/splash_screen.dart';
+import 'package:task_app/features/home/presentation/ui/home_screen.dart';
 
 class AppRouter {
   PageRoute? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case '/':
+      case Routes.splash:
         return _getPageRoute(const SplashScreen());
-      // Add other routes here as needed
+      case Routes.home:
+        return _getPageRoute(const HomeScreen());
       default:
-        return null;
+        // If route is not found, return to splash screen
+        return _getPageRoute(const SplashScreen());
     }
   }
 

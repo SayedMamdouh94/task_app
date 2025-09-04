@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:task_app/core/di/dependency_injection.dart';
 import 'package:task_app/core/router/app_router.dart';
+import 'package:task_app/core/router/routes.dart';
 import 'package:task_app/core/style/app_themes.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
         return MaterialApp(
           title: 'Task App',
           theme: AppThemes.lightTheme,
+          initialRoute: Routes.splash,
           onGenerateRoute: AppRouter().onGenerateRoute,
           debugShowCheckedModeBanner: false,
         );
