@@ -7,7 +7,6 @@ void main() {
     testWidgets('should render search bar with hint text', (tester) async {
       // Arrange
       const hintText = 'Search photos...';
-      String? searchQuery;
 
       // Act
       await tester.pumpWidget(
@@ -15,7 +14,9 @@ void main() {
           home: Scaffold(
             body: CustomSearchBar(
               hintText: hintText,
-              onChanged: (query) => searchQuery = query,
+              onChanged: (query) {
+                // Test callback - no need to store value
+              },
             ),
           ),
         ),

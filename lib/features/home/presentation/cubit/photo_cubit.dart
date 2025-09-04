@@ -10,10 +10,12 @@ class PhotoCubit extends Cubit<PhotoState> {
   PhotoCubit(this._getPhotosUseCase) : super(const PhotoInitial());
 
   Future<void> getPhotos() async {
+    if (isClosed) return;
     emit(const PhotoLoading());
 
     final result = await _getPhotosUseCase();
 
+    if (isClosed) return;
     switch (result) {
       case Success<List<PhotoEntity>>():
         emit(PhotoSuccess(photos: result.data, filteredPhotos: result.data));
@@ -23,6 +25,7 @@ class PhotoCubit extends Cubit<PhotoState> {
   }
 
   void searchPhotos(String query) {
+    if (isClosed) return;
     final currentState = state;
     if (currentState is PhotoSuccess) {
       if (query.isEmpty) {
@@ -33,6 +36,23 @@ class PhotoCubit extends Cubit<PhotoState> {
               (photo) =>
                   photo.title.toLowerCase().contains(query.toLowerCase()),
             )
+            .toList();
+        emit(currentState.copyWith(filteredPhotos: filteredPhotos));
+      }
+    }
+  }
+
+  void filterByAlbum(int? albumId) {
+    if (isClosed) return;
+    final currentState = state;
+    if (currentState is PhotoSuccess) {
+      if (albumId == null) {
+        // Show all photos
+        emit(currentState.copyWith(filteredPhotos: currentState.photos));
+      } else {
+        // Filter by album ID
+        final filteredPhotos = currentState.photos
+            .where((photo) => photo.albumId == albumId)
             .toList();
         emit(currentState.copyWith(filteredPhotos: filteredPhotos));
       }

@@ -8,6 +8,7 @@ import 'dart:async' as _i3;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:task_app/features/home/data/datasources/photo_api_service.dart'
     as _i2;
+import 'package:task_app/features/home/data/models/album_model.dart' as _i5;
 import 'package:task_app/features/home/data/models/photo_model.dart' as _i4;
 
 // ignore_for_file: type=lint
@@ -36,6 +37,32 @@ class MockPhotoApiService extends _i1.Mock implements _i2.PhotoApiService {
   _i3.Future<List<_i4.PhotoModel>> getPhotos({int? limit = 100}) =>
       (super.noSuchMethod(
             Invocation.method(#getPhotos, [], {#limit: limit}),
+            returnValue: _i3.Future<List<_i4.PhotoModel>>.value(
+              <_i4.PhotoModel>[],
+            ),
+          )
+          as _i3.Future<List<_i4.PhotoModel>>);
+
+  @override
+  _i3.Future<List<_i5.AlbumModel>> getAlbums({int? limit = 10}) =>
+      (super.noSuchMethod(
+            Invocation.method(#getAlbums, [], {#limit: limit}),
+            returnValue: _i3.Future<List<_i5.AlbumModel>>.value(
+              <_i5.AlbumModel>[],
+            ),
+          )
+          as _i3.Future<List<_i5.AlbumModel>>);
+
+  @override
+  _i3.Future<List<_i4.PhotoModel>> getPhotosByAlbum({
+    required int? albumId,
+    int? limit = 50,
+  }) =>
+      (super.noSuchMethod(
+            Invocation.method(#getPhotosByAlbum, [], {
+              #albumId: albumId,
+              #limit: limit,
+            }),
             returnValue: _i3.Future<List<_i4.PhotoModel>>.value(
               <_i4.PhotoModel>[],
             ),

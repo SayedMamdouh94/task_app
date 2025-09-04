@@ -31,14 +31,14 @@ class HomeView extends StatelessWidget {
       'https://picsum.photos/800/400?random=4',
     ];
 
-    final categories = [
-      'All',
-      'Nature',
-      'Animals',
-      'Technology',
-      'Travel',
-      'Food',
-      'Sports',
+    // Album-based categories (using real albumIds from JSONPlaceholder)
+    final categories = <Map<String, dynamic>>[
+      {'id': null, 'name': 'All', 'albumId': null},
+      {'id': 'album1', 'name': 'Album 1', 'albumId': 1},
+      {'id': 'album2', 'name': 'Album 2', 'albumId': 2},
+      {'id': 'album3', 'name': 'Album 3', 'albumId': 3},
+      {'id': 'album4', 'name': 'Album 4', 'albumId': 4},
+      {'id': 'album5', 'name': 'Album 5', 'albumId': 5},
     ];
 
     return Scaffold(
@@ -58,12 +58,27 @@ class HomeView extends StatelessWidget {
             ),
             FeaturedCarousel(imageUrls: featuredImages),
             HorizontalCategoriesList(
-              categories: categories,
-              onCategoryTap: (category) {
-                // You can implement category filtering here
-                ScaffoldMessenger.of(
-                  context,
-                ).showSnackBar(SnackBar(content: Text('Selected: $category')));
+              categories: categories
+                  .map((cat) => cat['name'] as String)
+                  .toList(),
+              onCategoryTap: (categoryName) {
+                // Find the selected category and filter by albumId
+                final selectedCategory = categories.firstWhere(
+                  (cat) => cat['name'] == categoryName,
+                );
+                final albumId = selectedCategory['albumId'] as int?;
+                context.read<PhotoCubit>().filterByAlbum(albumId);
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      albumId == null
+                          ? 'Showing all photos'
+                          : 'Filtered by $categoryName (Album $albumId)',
+                    ),
+                    duration: const Duration(seconds: 2),
+                  ),
+                );
               },
             ),
             const Padding(
